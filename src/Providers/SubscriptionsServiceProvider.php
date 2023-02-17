@@ -24,9 +24,9 @@ class SubscriptionsServiceProvider extends ServiceProvider
      * @var array
      */
     protected $commands = [
-        MigrateCommand::class => 'command.rinvex.subscriptions.migrate',
-        PublishCommand::class => 'command.rinvex.subscriptions.publish',
-        RollbackCommand::class => 'command.rinvex.subscriptions.rollback',
+        MigrateCommand::class,
+        PublishCommand::class,
+        RollbackCommand::class,
     ];
 
     /**
@@ -46,8 +46,9 @@ class SubscriptionsServiceProvider extends ServiceProvider
             'rinvex.subscriptions.plan_subscription_usage' => PlanSubscriptionUsage::class,
         ]);
 
-        // Register console commands
-        $this->registerCommands($this->commands);
+        if ($this->app->runningInConsole()) {
+            $this->commands($this->commands);
+        }
     }
 
     /**
